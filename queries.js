@@ -15,3 +15,27 @@ db.books.updateOne(
 //This changes the price field of the book titled "1984" to 13.99.
 // Delete the book titled "Animal Farm"
 db.books.deleteOne({ title: "Animal Farm" });
+
+//Task3
+//✅1.1. Find books that are in stock and published after 2010
+
+db.books.find({
+  in_stock: true,
+  published_year: { $gt: 2010 },
+});
+
+//✅2.Projection: Show only title, author, and price
+db.books.find({}, { _id: 0, title: 1, author: 1, price: 1 });
+
+//✅3. Sort books by price (ascending)
+db.books.find().sort({ price: 1 });
+
+//✅ 4. Sort books by price (descending)
+db.books.find().sort({ price: -1 });
+
+//✅ 5. Pagination (limit + skip) — Show 5 books per page
+// Page 1
+db.books.find().limit(5);
+
+// Page 2 (skip first 5, show next 5)
+db.books.find().skip(5).limit(5);
