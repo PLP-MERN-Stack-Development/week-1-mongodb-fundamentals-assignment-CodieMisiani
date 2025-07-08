@@ -39,3 +39,44 @@ db.books.find().limit(5);
 
 // Page 2 (skip first 5, show next 5)
 db.books.find().skip(5).limit(5);
+
+//Task 4
+//✅ 1. Calculate the average price of books by genre
+db.books.aggregate([
+  {
+    $group: {
+      _id: "$genre",
+      averagePrice: { $avg: "$price" },
+    },
+  },
+]);
+
+//✅ 2. Find the author with the most books in the collection
+db.books.aggregate([
+  {
+    $group: {
+      _id: "$author",
+      totalBooks: { $sum: 1 },
+    },
+  },
+  { $sort: { totalBooks: -1 } },
+  { $limit: 1 },
+]);
+
+//✅ 3. Group books by publication decade and count them
+db.books.aggregate([
+  {
+    $project: {
+      decade: {
+        $subtract: ["$published_year", { $mod: ["$published_year", 10] }],
+      },
+    },
+  },
+  {
+    $group: {
+      _id: "$decade",
+      count: { $sum: 1 },
+    },
+  },
+  { $sort: { _id: 1 } },
+]);
