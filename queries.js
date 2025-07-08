@@ -80,3 +80,16 @@ db.books.aggregate([
   },
   { $sort: { _id: 1 } },
 ]);
+
+//🗃️ TASK 5: Indexing
+//✅ 1. Create an index on title
+db.books.createIndex({ title: 1 });
+
+//✅ 2. Create a compound index on author and published_year
+db.books.createIndex({ author: 1, published_year: -1 });
+
+//✅ 3. Use .explain() to analyze performance
+//Before indexing:
+db.books.find({ title: "1984" }).explain("executionStats");
+//After creating the index, run it again:
+db.books.find({ title: "1984" }).explain("executionStats");
